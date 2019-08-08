@@ -1,6 +1,7 @@
 pandas
-flask
 daiquiri
 gevent
 gunicorn
 codecov
+fastapi
+uvicorn

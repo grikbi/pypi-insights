@@ -29,4 +29,3 @@ AWS_S3_ENDPOINT_URL = os.environ.get('AWS_S3_ENDPOINT_URL', '')
 MIN_CONFIDENCE_SCORE = np.float32(int(os.environ.get('MIN_CONFIDENCE_SCORE', 30)))
 GITHUB_TOKEN = os.environ.get('GITHUB_TOKEN', '')
 LOCAL_ACCESS = os.environ.get('LOCAL_ACCESS', 'true') == 'true'
-print("CLOUD CONSTANTS COMPLETE")

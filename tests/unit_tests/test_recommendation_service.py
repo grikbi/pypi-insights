@@ -9,6 +9,7 @@ import mock
 import pytest
 from faker import Faker
 from src.config.cloud_constants import MIN_CONFIDENCE_SCORE
+from starlette.testclient import TestClient
 
 faker = Faker()
 
@@ -47,7 +48,7 @@ class MockHPFScoring(mock.Mock):
 def api_client(_request):
     """Create an api client instance."""
     from src.recommendation_service import app
-    client = app.test_client()
+    client = TestClient(app)
     return client
 
 
@@ -56,32 +57,35 @@ class TestRecommendationService:
 
     def test_liveness(self, api_client):
         """Test liveness endpoint."""
-        resp = api_client.get('/api/v1/liveness')
+        response = api_client.get('/api/v1/liveness')
+        resp = response.json()
+        assert response is not None
+        assert response.status_code == 200
         assert resp is not None
-        assert resp.status_code == 200
-        assert resp.json is not None
-        assert resp.json == {}
+        assert resp == {}
 
     def test_readiness(self, api_client):
         """Test Readiness endpoint."""
-        resp = api_client.get('/api/v1/readiness')
+        response = api_client.get('/api/v1/readiness')
+        resp = response.json()
+        assert response is not None
+        assert response.status_code == 200
         assert resp is not None
-        assert resp.status_code == 200
-        assert resp.json is not None
-        assert resp.json["status"] == "ready"
+        assert resp["status"] == "ready"
 
     def test_companion_recommendation_with_known_stack(self, api_client):
         """Test companion recommendation endpoint with proper stack."""
         payload = [{"package_list": ['django', 'flask']}]
         headers = {'content-type': 'application/json'}
-        resp = api_client.post('/api/v1/companion_recommendation',
-                               data=json.dumps(payload),
-                               headers=headers)
+        response = api_client.post('/api/v1/companion_recommendation',
+                                   data=json.dumps(payload),
+                                   headers=headers)
+        resp = response.json()
+        assert response is not None
+        assert response.status_code == 200
         assert resp is not None
-        assert resp.status_code == 200
-        assert resp.json is not None
-        assert len(resp.json) > 0
-        for pkgs in resp.json:
+        assert len(resp) > 0
+        for pkgs in resp:
             assert not pkgs['missing_packages']
             assert pkgs['ecosystem'] == 'pypi'
             assert pkgs['companion_packages']
@@ -94,14 +98,15 @@ class TestRecommendationService:
         """Test companion recommendation endpoint with unknown stack."""
         payload = [{"package_list": ['unknown1', 'unknown2']}]
         headers = {'content-type': 'application/json'}
-        resp = api_client.post('/api/v1/companion_recommendation',
-                               data=json.dumps(payload),
-                               headers=headers)
+        response = api_client.post('/api/v1/companion_recommendation',
+                                   data=json.dumps(payload),
+                                   headers=headers)
+        resp = response.json()
+        assert response is not None
+        assert response.status_code == 200
         assert resp is not None
-        assert resp.status_code == 200
-        assert resp.json is not None
-        assert len(resp.json) > 0
-        for pkgs in resp.json:
+        assert len(resp) > 0
+        for pkgs in resp:
             assert pkgs['ecosystem'] == 'pypi'
             assert len(pkgs['missing_packages']) == 2
             assert 'unknown1' in pkgs['missing_packages']
@@ -112,14 +117,15 @@ class TestRecommendationService:
         """Test companion recommendation endpoint with transitive stack."""
         payload = [{"package_list": ['flask'], "transitive_stack": ['click']}]
         headers = {'content-type': 'application/json'}
-        resp = api_client.post('/api/v1/companion_recommendation',
-                               data=json.dumps(payload),
-                               headers=headers)
+        response = api_client.post('/api/v1/companion_recommendation',
+                                   data=json.dumps(payload),
+                                   headers=headers)
+        resp = response.json()
+        assert response is not None
+        assert response.status_code == 200
         assert resp is not None
-        assert resp.status_code == 200
-        assert resp.json is not None
-        assert len(resp.json) > 0
-        for pkgs in resp.json:
+        assert len(resp) > 0
+        for pkgs in resp:
             assert not pkgs['missing_packages']
             assert pkgs['companion_packages']
             assert pkgs['ecosystem'] == 'pypi'
