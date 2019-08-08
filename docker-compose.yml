@@ -1,0 +1,43 @@
+version: '2'
+
+services:
+  
+  s3-local:
+    image: quay.io/farrion/minio_base:latest
+    command:
+        - server
+        - --address
+        - ":33000"
+        - /data
+    container_name: s3-local
+    labels: 
+      kompose.service.type: nodeport
+    network_mode: bridge
+    ports:
+      - 33000:33000
+    environment:
+      MINIO_ACCESS_KEY: GNV3SAHAHA3DOT99GQII
+      MINIO_SECRET_KEY: ZmvMwngonaDK5ymlCd6ptaalDdJsCn3aSSxASPaZ
+    
+  pypi-insights:
+    build:
+      context: .
+    entrypoint: /bin/entrypoint.sh
+    environment:
+      AWS_S3_ACCESS_KEY_ID: GNV3SAHAHA3DOT99GQII
+      AWS_S3_SECRET_ACCESS_KEY: ZmvMwngonaDK5ymlCd6ptaalDdJsCn3aSSxASPaZ
+      AWS_S3_ENDPOINT_URL: http://s3-local:33000
+      SERVICE_PORT: 6006
+      SERVICE_TIMEOUT: 30
+      LOCAL_ACCESS: "true"
+      USE_CLOUD_SERVICES: "false"
+    ports:
+    - 6006:6006 
+    network_mode: bridge
+    links:
+      - s3-local
+    labels: 
+      kompose.service.type: nodeport
+      kompose.volume.size: 150Mi
+    depends_on:
+      - s3-local

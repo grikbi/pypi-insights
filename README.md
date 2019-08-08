@@ -1,6 +1,11 @@
 # f8a-pypi-insights
 This repository contains the code for the model that serves the companion recommendations for Python.
 
+#### Run this via Container
+docker-compose up
+
+#### Swagger
+Swagger is available at `/docs` and redoc is available at `/redoc' endpoint.
 
 ## Footnotes:
 
