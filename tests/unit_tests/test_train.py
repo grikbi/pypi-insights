@@ -87,4 +87,4 @@ class TestTraining:
         user_input_df = user_item_df.loc[user_item_df['is_user_input_stack']]
         train_df, test_df = train_test_split(user_item_df)
         assert round(float(Fraction(len(test_df.index),
-                                    len(user_input_df.index))), 2) == 0.20
+                                    len(user_input_df.index))), 2) <= 0.20

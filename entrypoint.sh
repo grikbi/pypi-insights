@@ -3,7 +3,7 @@
 # gunicorn --pythonpath /src -b 0.0.0.0:$SERVICE_PORT --workers=1 -k sync -t $SERVICE_TIMEOUT recommendation_service:app
 
 if [[ -z "${SERVICE_PORT}" ]]; then
-  SERVICE_PORT="6162"
+  SERVICE_PORT="6006"
 fi
 # Need to export these variables since Click complains otherwise
 export LC_ALL="en_US.UTF-8"
