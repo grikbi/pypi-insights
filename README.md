@@ -5,7 +5,7 @@ It also requires graph services `gremlin-http` to work in tandem with pypi-insig
 ### Data set
 
 - It consists of trained model comprising of 19k unique packages and around 75k user-item matrix known as a stack in developer's parlance.
-- Although it contains a fully trained model for packages, graph data consists of a subset of packages based on the contents of [this organization](https://github.com/fabric8-analytics). 
+- Graph data consists of a subset of packages based on the manifests found under [this organization](https://github.com/fabric8-analytics). 
 
 ### Run this locally via container
 
