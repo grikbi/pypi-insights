@@ -1,132 +1,21 @@
-# f8a-pypi-insights
-This repository contains the code for the model that serves the companion recommendations for Python.
+# pypi-insights
+This repository contains the code for the model that serves the companion recommendations for Python ecosystem.
+It also requires graph services `gremlin-http` to work in tandem with pypi-insights to provide end-users a companion recommendation with a specific version.
 
-#### Run this via Container
-docker-compose up
+### Data set
 
-#### Swagger
-Swagger is available at `/docs` and redoc is available at `/redoc' endpoint.
+- It consists of trained model comprising of 19k unique packages and around 75k user-item matrix known as a stack in developer's parlance.
+- Although it contains a fully trained model for packages, graph data consists of a subset of packages based on the contents of [this organization](https://github.com/fabric8-analytics). 
 
-## Footnotes:
+### Run this locally via container
 
-#### Check for all possible issues
+- cd to root directory
+- docker-compose up -d
+- Acces the service at `http://localhost:6006`
 
-The script named `check-all.sh` is to be used to check the sources for all detectable errors and issues. This script can be run w/o any arguments:
+### Swagger
+Swagger is available at `/docs` and redoc is available at `/redoc` endpoint.
 
-```
-./check-all.sh
-```
-
-Expected script output:
-
-```
-Running all tests and checkers
-  Check all BASH scripts
-    OK
-  Check documentation strings in all Python source file
-    OK
-  Detect common errors in all Python source file
-    OK
-  Detect dead code in all Python source file
-    OK
-  Run Python linter for Python source file
-    OK
-  Unit tests for this project
-    OK
-Done
-
-Overal result
-  OK
-```
-
-An example of script output when one error is detected:
-
-```
-Running all tests and checkers
-  Check all BASH scripts
-    Error: please look into files check-bashscripts.log and check-bashscripts.err for possible causes
-  Check documentation strings in all Python source file
-    OK
-  Detect common errors in all Python source file
-    OK
-  Detect dead code in all Python source file
-    OK
-  Run Python linter for Python source file
-    OK
-  Unit tests for this project
-    OK
-Done
-
-Overal result
-  One error detected!
-```
-
-Please note that the script creates bunch of `*.log` and `*.err` files that are temporary and won't be commited into the project repository.
-
-#### Coding standards:
-
-- You can use scripts `run-linter.sh` and `check-docstyle.sh` to check if the code follows [PEP 8](https://www.python.org/dev/peps/pep-0008/) and [PEP 257](https://www.python.org/dev/peps/pep-0257/) coding standards. These scripts can be run w/o any arguments:
-
-```
-./run-linter.sh
-./check-docstyle.sh
-```
-
-The first script checks the indentation, line lengths, variable names, whitespace around operators etc. The second
-script checks all documentation strings - its presence and format. Please fix any warnings and errors reported by these
-scripts.
-
-#### Code complexity measurement:
-
-The scripts `measure-cyclomatic-complexity.sh` and `measure-maintainability-index.sh` are used to measure code complexity. These scripts can be run w/o any arguments:
-
-```
-./measure-cyclomatic-complexity.sh
-./measure-maintainability-index.sh
-```
-
-The first script measures cyclomatic complexity of all Python sources found in the repository. Please see [this table](https://radon.readthedocs.io/en/latest/commandline.html#the-cc-command) for further explanation how to comprehend the results.
-
-The second script measures maintainability index of all Python sources found in the repository. Please see [the following link](https://radon.readthedocs.io/en/latest/commandline.html#the-mi-command) with explanation of this measurement.
-
-You can specify command line option `--fail-on-error` if you need to check and use the exit code in your workflow. In this case the script returns 0 when no failures has been found and non zero value instead.
-
-#### Dead code detection
-
-The script `detect-dead-code.sh` can be used to detect dead code in the repository. This script can be run w/o any arguments:
-
-```
-./detect-dead-code.sh
-```
-
-Please note that due to Python's dynamic nature, static code analyzers are likely to miss some dead code. Also, code that is only called implicitly may be reported as unused.
-
-Because of this potential problems, only code detected with more than 90% of confidence is reported.
-
-#### Common issues detection
-
-The script `detect-common-errors.sh` can be used to detect common errors in the repository. This script can be run w/o any arguments:
-
-```
-./detect-common-errors.sh
-```
-
-Please note that only semantical problems are reported.
-
-#### Check for scripts written in BASH
-
-The script named `check-bashscripts.sh` can be used to check all BASH scripts (in fact: all files with the `.sh` extension) for various possible issues, incompatibilities, and caveats. This script can be run w/o any arguments:
-
-```
-./check-bashscripts.sh
-```
-
-Please see [the following link](https://github.com/koalaman/shellcheck) for further explanation, how the ShellCheck works and which issues can be detected.
-
-#### Code coverage report
-
-Code coverage is reported via the codecov.io. The results can be seen on the following address:
-
-[code coverage report](https://codecov.io/gh/fabric8-analytics/f8a-pypi-insights)
-
-This repository contains the code powering the Golang(Openshift/Kubernetes) insights engine of developer AI platform. WIP.
+### Run the tests locally
+- cd to root directory
+- sh runtest.sh
