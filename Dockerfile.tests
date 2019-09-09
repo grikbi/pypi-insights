@@ -1,10 +1,6 @@
-FROM centos:7
+FROM farrion/python3-ml:latest
 
 LABEL maintainer="Mitesh Patel <mitpatel@redhat.com>"
-
-RUN yum install -y epel-release &&\
-    yum install -y gcc-c++ git python36-pip python36-requests httpd httpd-devel python36-devel &&\
-    yum clean all
 
 COPY ./requirements.txt /requirements.txt
 

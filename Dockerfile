@@ -1,4 +1,4 @@
-FROM quay.io/farrion/python3-ml:latest
+FROM farrion/python3-ml:latest
 
 LABEL maintainer="Mitesh Patel <mitpatel@redhat.com>"
 
