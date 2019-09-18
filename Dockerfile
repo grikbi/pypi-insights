@@ -15,4 +15,6 @@ COPY ./src /src
 
 RUN chmod +x /bin/entrypoint.sh
 
+EXPOSE 6006
+
 ENTRYPOINT ["/bin/entrypoint.sh"]
